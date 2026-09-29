@@ -1,0 +1,48 @@
+#compdef certview csrview keyview
+# SPDX-License-Identifier: CC0-1.0
+
+_certview() {
+  local curcontext="$curcontext" state line
+  typeset -A opt_args
+
+  case "$service" in
+    certview)
+      _arguments -s -S \
+        '(-s --subject)'{-s,--subject}'[Print subject DN]' \
+        '(-i --issuer)'{-i,--issuer}'[Print issuer DN]' \
+        '(-d --dates)'{-d,--dates}'[Print validity start and expiration dates]' \
+        '(-f --fingerprint)'{-f,--fingerprint}'[Print SHA-256 fingerprint]' \
+        '(-n --san)'{-n,--san}'[Print Subject Alternative Names (SAN)]' \
+        '--serial[Print certificate serial number]' \
+        '(-p --pubkey)'{-p,--pubkey}'[Print public key]' \
+        '(-m --modulus)'{-m,--modulus}'[Print certificate key modulus]' \
+        '(-c --check)'{-c,--check}'[Check if certificate is currently valid]' \
+        '(-t -a --text --all)'{-t,-a,--text,--all}'[Print full decoded certificate]' \
+        '(-h --help)'{-h,--help}'[Show usage help]' \
+        '*:certificate file:_files -g "*.crt *.cer *.pem *.der(-.)"'
+      ;;
+
+    csrview)
+      _arguments -s -S \
+        '(-s --subject)'{-s,--subject}'[Print subject DN]' \
+        '(-n --san)'{-n,--san}'[Print requested Subject Alternative Names]' \
+        '(-p --pubkey)'{-p,--pubkey}'[Print public key]' \
+        '(-m --modulus)'{-m,--modulus}'[Print key modulus]' \
+        '(-v --verify)'{-v,--verify}'[Verify self-signature on CSR]' \
+        '(-t -a --text --all)'{-t,-a,--text,--all}'[Print full decoded CSR]' \
+        '(-h --help)'{-h,--help}'[Show usage help]' \
+        '*:CSR file:_files -g "*.csr *.pem *.der(-.)"'
+      ;;
+
+    keyview)
+      _arguments -s -S \
+        '(-c --check)'{-c,--check}'[Verify key integrity]' \
+        '(-p --pubkey)'{-p,--pubkey}'[Extract and print public key]' \
+        '(-t -a --text --all)'{-t,-a,--text,--all}'[Print full key parameters and curve details]' \
+        '(-h --help)'{-h,--help}'[Show usage help]' \
+        '*:key file:_files -g "*.key *.pem *.der *.p8 *.pk8 *.pub(-.)"'
+      ;;
+  esac
+}
+
+_certview "$@"
